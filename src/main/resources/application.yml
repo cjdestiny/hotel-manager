@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: hotel-manager
+    #?????
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/my_db_01?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
+  #redis??token
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+
+
+mybatis-plus:
+  type-aliases-package: com.example.hotelmanager.pojo
+  mapper-locations: classpath:/mapper/*.xml   #??res??mapper/*.xml??
+  configuration:
+    map-underscore-to-camel-case: false  #????????????
+
