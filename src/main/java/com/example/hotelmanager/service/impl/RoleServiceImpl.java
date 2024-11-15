@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.hotelmanager.mapper.RoleMapper;
 import com.example.hotelmanager.pojo.Role;
 import com.example.hotelmanager.service.RoleService;
-import com.example.hotelmanager.vo.RolePageVO;
+import com.example.hotelmanager.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +23,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @return
      */
     @Override
-    public RolePageVO<Role> rolePage(int page, int pageSize) {
+    public PageVO<Role> rolePage(int page, int pageSize) {
         LambdaQueryWrapper<Role> roleLambdaQueryWrapper = Wrappers.lambdaQuery();
         roleLambdaQueryWrapper.select();
          /* Page<Role> page1 = Page.of(page,pageSize);
-          page1 = page(page1);   //另外一钟分页查询写法*/
+          page1 = page(page1,roleLambdaQueryWrapper);   //另外一钟分页查询写法*/
 
         // 分页参数
         Page<Role> rolePage = new Page<>(Long.valueOf(page), Long.valueOf(pageSize));
@@ -36,7 +36,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         IPage<Role> roleIPage = roleMapper.selectPage(rolePage, roleLambdaQueryWrapper);
 
         // 改造返回结果RolePage
-        RolePageVO<Role> roleRolePageVO = new RolePageVO<Role>()
+        PageVO<Role> roleRolePageVO = new PageVO<Role>()
                 .setPage(page)
                 .setPageSize(pageSize)
                 .setTotal(roleIPage.getTotal())

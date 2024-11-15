@@ -6,7 +6,7 @@ import com.example.hotelmanager.pojo.User;
 import com.example.hotelmanager.service.RoleService;
 import com.example.hotelmanager.service.UserService;
 import com.example.hotelmanager.utils.JwtUtil;
-import com.example.hotelmanager.vo.RolePageVO;
+import com.example.hotelmanager.vo.PageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -91,10 +91,10 @@ public class AdminController {
      * @return
      */
     @GetMapping("/my/roleList")
-    public Result<RolePageVO<Role>> roleList(@RequestParam int page,@RequestParam int pageSize){
+    public Result<PageVO<Role>> roleList(@RequestParam int page, @RequestParam int pageSize){
         log.info("role的分页查询{}",page,pageSize);
         //返回结果page,pageSize,total,roleList
-        RolePageVO<Role> roleAllPage = roleService.rolePage(page ,pageSize);
+        PageVO<Role> roleAllPage = roleService.rolePage(page ,pageSize);
         return Result.success(roleAllPage);
     }
 
@@ -129,11 +129,24 @@ public class AdminController {
      * @return
      */
     @GetMapping("/my/deleteRole")
-    public Result deleteRole(@RequestParam int roleId){
+    public Result deleteRole(@RequestParam Integer roleId){
         log.info("删除角色{}",roleId);
         roleService.removeById(roleId);
         return Result.success();
     }
 
+    /**
+     * 查询用户管理列表
+     * @param page
+     * @param pageSize
+     * @param roleId
+     * @return
+     */
+    @GetMapping("/my/userList")
+    public Result<PageVO<User>> userList(@RequestParam int page,@RequestParam int pageSize,@RequestParam Integer roleId){
+        log.info("查询用户管理列表{},{},{}",page,pageSize,roleId);
+       PageVO<User> userPageVO = userService.pageUserList(page,pageSize,roleId);
+       return Result.success(userPageVO);
+    }
 
 }

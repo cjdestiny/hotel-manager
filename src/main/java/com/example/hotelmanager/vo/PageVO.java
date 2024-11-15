@@ -1,6 +1,5 @@
 package com.example.hotelmanager.vo;
 
-import com.example.hotelmanager.pojo.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +11,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class RolePageVO <T>{
-    private int page;
-    private int pageSize;
+public class PageVO<T>{
+    private Integer page;
+    private Integer pageSize;
     private Long total;
     private List<T> itemList;
 }

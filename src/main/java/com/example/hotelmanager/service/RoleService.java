@@ -2,7 +2,7 @@ package com.example.hotelmanager.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.hotelmanager.pojo.Role;
-import com.example.hotelmanager.vo.RolePageVO;
+import com.example.hotelmanager.vo.PageVO;
 
 public interface RoleService extends IService<Role> {
     /**
@@ -11,7 +11,7 @@ public interface RoleService extends IService<Role> {
      * @param pageSize
      * @return
      */
-    RolePageVO<Role> rolePage(int page, int pageSize);
+    PageVO<Role> rolePage(int page, int pageSize);
 
     /**
      * role数据插入
