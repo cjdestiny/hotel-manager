@@ -21,8 +21,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private RoleMapper roleMapper;
 
     /**
      * 用户注册
@@ -42,34 +40,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return user;
     }
 
-    /**
-     * 根据page,pageSize查询role
-     * @param page
-     * @param pageSize
-     * @return
-     */
-    @Override
-    public RolePageVO<Role> rolePage(int page, int pageSize) {
-        LambdaQueryWrapper<Role> roleLambdaQueryWrapper = Wrappers.lambdaQuery();
-        roleLambdaQueryWrapper.select();
-         /* Page<Role> page1 = Page.of(page,pageSize);
-          page1 = page(page1);   //另外一钟分页查询写法*/
 
-        // 分页参数
-        Page<Role> rolePage = new Page<>(Long.valueOf(page), Long.valueOf(pageSize));
-
-        // 调用分页查询
-        IPage<Role> roleIPage = roleMapper.selectPage(rolePage, roleLambdaQueryWrapper);
-
-        // 改造返回结果RolePage
-        RolePageVO<Role> roleRolePageVO = new RolePageVO<Role>()
-                .setPage(page)
-                .setPageSize(pageSize)
-                .setTotal(roleIPage.getTotal())
-                .setItemList(roleIPage.getRecords());
-
-
-        return roleRolePageVO;
-    }
 
 }

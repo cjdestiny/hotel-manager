@@ -3,6 +3,7 @@ package com.example.hotelmanager.controller.admin;
 import com.example.hotelmanager.pojo.Result;
 import com.example.hotelmanager.pojo.Role;
 import com.example.hotelmanager.pojo.User;
+import com.example.hotelmanager.service.RoleService;
 import com.example.hotelmanager.service.UserService;
 import com.example.hotelmanager.utils.JwtUtil;
 import com.example.hotelmanager.vo.RolePageVO;
@@ -23,6 +24,8 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private RoleService roleService;
 
 
     /**
@@ -82,7 +85,7 @@ public class AdminController {
     }
 
     /**
-     * role的分页查询功能
+     *获取用户角色列表
      * @param page
      * @param pageSize
      * @return
@@ -91,8 +94,45 @@ public class AdminController {
     public Result<RolePageVO<Role>> roleList(@RequestParam int page,@RequestParam int pageSize){
         log.info("role的分页查询{}",page,pageSize);
         //返回结果page,pageSize,total,roleList
-        RolePageVO<Role> roleAllPage = userService.rolePage(page ,pageSize);
+        RolePageVO<Role> roleAllPage = roleService.rolePage(page ,pageSize);
         return Result.success(roleAllPage);
+    }
+
+    /**
+     * 新增角色
+     * @param roleName
+     * @return
+     */
+    @PostMapping("/my/addRole")
+    public Result addRole(@RequestParam String roleName){
+        log.info("新增角色{}",roleName);
+        roleService.addRole(roleName);
+        return Result.success();
+    }
+
+    /**
+     * 编辑角色
+     * @param roleId
+     * @param roleName
+     * @return
+     */
+    @PostMapping("/my/updateRole")
+    public Result updateRole(@RequestParam int roleId,@RequestParam String roleName){
+        log.info("编辑角色{},{}",roleId,roleName);
+        roleService.updateByRoleId(roleId,roleName);
+        return Result.success();
+    }
+
+    /**
+     * 删除角色
+     * @param roleId
+     * @return
+     */
+    @GetMapping("/my/deleteRole")
+    public Result deleteRole(@RequestParam int roleId){
+        log.info("删除角色{}",roleId);
+        roleService.removeById(roleId);
+        return Result.success();
     }
 
 
