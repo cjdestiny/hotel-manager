@@ -1,25 +1,19 @@
 package com.example.hotelmanager.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.w3c.dom.Text;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
-@Builder
-@TableName("ev_users")
-public class User {
-    private int id;
-    private String username;
-    private String password;
-    private String name;
-    private String phone;
-    private Text userPic;
+@TableName("ev_role")
+public class Role {
+    @TableId
     private int roleId;
+    private String roleName;
 }

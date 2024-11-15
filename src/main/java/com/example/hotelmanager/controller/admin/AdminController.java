@@ -1,9 +1,11 @@
-package com.example.hotelmanager.contrller;
+package com.example.hotelmanager.controller.admin;
 
 import com.example.hotelmanager.pojo.Result;
+import com.example.hotelmanager.pojo.Role;
 import com.example.hotelmanager.pojo.User;
 import com.example.hotelmanager.service.UserService;
 import com.example.hotelmanager.utils.JwtUtil;
+import com.example.hotelmanager.vo.RolePageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -15,16 +17,21 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/api")
 @Slf4j
-public class UserController {
+public class AdminController {
     @Autowired
     private UserService userService;
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    //注册功能
-    @PostMapping("/reguser")
+
+    /**
+     * 注册功能
+     * @param username
+     * @param password
+     * @return
+     */
+    @PostMapping("/api/reguser")
     public Result<String> register(@RequestParam String username,@RequestParam String password){
         log.info("正在注册验证...",username);
         //根据username查询用户
@@ -33,14 +40,20 @@ public class UserController {
         if (user!=null) {
             return Result.error("用户已存在");
         }
-//        mp帮我插入数据库
-        User newUser = new User().setUsername(username).setPassword(password);
+//        mp帮我插入数据库,注册默认为2普通管理员
+        User newUser = new User().setUsername(username).setPassword(password).setRoleId(2); //2是普通管理员
         userService.save(newUser);
         System.out.println(username + "注册成功");
         return Result.success("注册成功！");
     }
-    //登录功能
-    @PostMapping("/login")
+
+    /**
+     * 登录功能
+     * @param username
+     * @param password
+     * @return
+     */
+    @PostMapping("/api/login")
     public Result<String> login(@RequestParam String username,@RequestParam String password){
         log.info("验证登录{}",username);
         //判断用户是否存在
@@ -67,4 +80,20 @@ public class UserController {
 
         return Result.success(token);
     }
+
+    /**
+     * role的分页查询功能
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/my/roleList")
+    public Result<RolePageVO<Role>> roleList(@RequestParam int page,@RequestParam int pageSize){
+        log.info("role的分页查询{}",page,pageSize);
+        //返回结果page,pageSize,total,roleList
+        RolePageVO<Role> roleAllPage = userService.rolePage(page ,pageSize);
+        return Result.success(roleAllPage);
+    }
+
+
 }
